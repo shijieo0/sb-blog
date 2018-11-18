@@ -3,11 +3,12 @@ buildscript {
 
 	// ext 用于定义动态属性
 	ext {
-		springBootVersion = '2.0.4.RELEASE'
+		springBootVersion = '1.5.2.RELEASE'
 	}
     // 自定义 Thymeleaf 和 Thymeleaf Layout Dialect的版本（springboot-starter默认集成的版本过低）
-//    ext['thymeleaf.version'] = '3.0.3.RELEASE'
-//    ext['thymeleaf-layout-dialect.version'] = '2.2.0'
+    ext['thymeleaf.version'] = '3.0.3.RELEASE'
+    ext['thymeleaf-layout-dialect.version'] = '2.2.0'
+    ext['hibernate.version'] = '5.2.8.Final'
 
 	// 使用了Maven的中央仓库及Spring自己的仓库（也可以指定其他仓库）
 	repositories {
@@ -50,6 +51,11 @@ dependencies {
 	// 该依赖用于编译阶段
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('mysql:mysql-connector-java:6.0.5')
+
+    runtime('com.h2database:h2:1.4.193')
 
 	// 该依赖用于测试阶段
 	testCompile('org.springframework.boot:spring-boot-starter-test')

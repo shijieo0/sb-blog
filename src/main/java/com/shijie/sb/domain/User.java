@@ -1,15 +1,23 @@
 package com.shijie.sb.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Created by ShiJie on 2018-11-13 21:46
  */
+@Entity
 public class User {
 
+    @Id  // 主键
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 自增策略
     private Long id; // 实体唯一标识
     private String name;
     private String email;
 
-    public User() {
+    protected User() { // 无参构造设为protected,防止直接使用
     }
 
     public User(Long id, String name, String email) {
@@ -40,5 +48,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User[id=%d,name='%s',email='%s']", id, name, email);
     }
 }

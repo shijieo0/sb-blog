@@ -30,5 +30,250 @@ GET /users/modify/{id} : 根据id获取相应的用户数据并返回form.html�
 * header.html：共用的头部页面
 * footer.html：共用的底部页面
 
-## 
+## 数据持久化
+
+### 什么是JPA
+
+* JPA（Java Persistence API）是用于管理Java EE 和 Java SE 环境中的持久化，以及对象/关系映射的Java API
+* 最新规范为“[JSR 338：Java Persistence 2.1](https://jcp.org/en/jsr/detail?id=338)”
+* 实现：EclipseLink、Hibernate、Apache OpenJPA
+
+### JPA核心概念
+
+* 实体
+
+  * 实体表示关系数据库中的表
+  * 每个实体实例对应于该表中的行
+  * 类必须用javax.persistence.Entity注解
+  * 类必须有一个public或protected的无参数构造函数
+  * 实体实例被当作值以分离对象方式进行传递（例如通过会话bean的远程业务接口），则该类必须实现Serializable接口
+  * 唯一的对象标识符：简单主键（javax.persistence.Id）、复合主键（javax.persistence.EmbeddedId和javax.persistence.IdClass）
+
+* 关系
+
+  * 一对一：@OneToOne
+  * 一对多：@OneToMany
+  * 多对一：@ManyToOne
+  * 多对多：@ManyToMany
+
+* EntityManager接口
+
+  * 定义用于与持久化上下文进行交互的方法
+  * 创建和删除持久实体实例，通过实体的主键查找实体
+  * 允许在实体上运行查询
+
+* 获取EntityManager实例
+
+  > @PersistenceUnit
+  >
+  > EntityManagerFactory emf;
+  >
+  > EntityManager em;
+  >
+  > @Resource
+  >
+  > UserTransaction utx;
+  >
+  > ...
+  >
+  > em = emf.createEntityManager();
+  >
+  > try {
+  >
+  > ​	utx.begin();
+  >
+  > ​	em.persist(someEntity);
+  >
+  > ​	em.merge(anotherEntity);
+  >
+  > ​	em.remove(thirdEntity);
+  >
+  > ​	utx.commit();
+  >
+  > } catch (Exception e) {
+  >
+  > ​	utx.rollback();
+  >
+  > }
+
+### Spring Data JPA
+
+> **什么是Spring Data JPA**
+
+* 它是更大的Spring Data家族的一部分
+* 对基于JPA的数据访问层的增强支持
+* 更容易构建基于使用Spring数据访问技术栈的应用程序
+
+> **Spring Data JPA 常用接口**
+
+* CrudRepository
+
+  > public interface CrudRepository<T, TD extends Serializable> extends Repository<T, ID> {
+  >
+  > ​	<S extends T> S save(S entity);
+  >
+  > ​	T findOne(ID primaryKey);
+  >
+  > ​	Iterable<T> findAll();
+  >
+  > ​	Long count();
+  >
+  > ​	void delete(T entity);
+  >
+  > ​	boolean exists(ID primaryKey);
+  >
+  > ​	// ... more functionality omitted.
+  >
+  > }
+
+* PagingAndSortingRepository
+
+  > public interface PagingAndSortingRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
+  >
+  > ​	Iterable<?> findAll(Sort sort);
+  >
+  > ​	Page<T> findAll(Pageable pageable);
+  >
+  > }
+
+> **Spring Data JPA自定义接口**
+
+* 根据方法名创建查询
+
+### Spring Data JPA、Hibernate 与 Spring Boot 集成
+
+> **配置环境**
+
+* MySQL Community Server 5.7+
+* Spring Data JPA 1.11.1.RELEASE
+* Hibernate 5.2.8.Final
+* MySQL Connector/J 6.0.5
+
+#### 1.持久化到H2
+
+build.gradle中添加依赖：
+
+```
+compile('org.springframework.boot:spring-boot-starter-data-jpa')
+compile('mysql:mysql-connector-java:6.0.5')
+runtime('com.h2database:h2:1.4.196')
+```
+
+修改application.properties
+
+```
+# 使用 H2 浏览器控制台
+spring.h2.console.enabled=true
+```
+
+启动应用后，访问：http://localhost:8080/h2-console/
+
+![1542539953655](docs\images\h2-console-login-page.png)
+
+#### 2.持久化到MySQL
+
+启动mysql
+
+```
+# docker pull hub.c.163.com/library/mysql:latest
+# docker run -d -p 3306:3306 -v /data/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bigdata hub.c.163.com/library/mysql
+```
+
+创建blog数据库
+
+> create database blog default charset utf8 collate utf8_general_ci;
+
+修改application.properties，假如mysql配置
+
+```
+# DataSource
+spring.datasource.url=jdbc:mysql://192.168.0.70/blog?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=bigdata
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA
+spring.jpa.show-sql = true
+# 每次启动时如果存在就删除，开发时很有用
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+
+启动应用，观察控制台，自动创建表
+
+> Hibernate: drop table if exists user
+> Hibernate: create table user (id bigint not null auto_increment, email varchar(255), name varchar(255), primary key (id))
+
+## Bootstrap
+
+### Bootstrap简介
+
+* 基于HTML、CSS、JavaScript的前端框架
+
+* 响应式布局
+
+* 移动设备优先
+
+* 支持HTML5标准，doctype
+
+  `<!DOCTYPE html>`
+
+  `<html lang="en">`
+
+  `...`
+
+  `</html>`
+
+* 响应式meta标签
+
+`<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">`
+
+* Normalize.css
+  * 使用Normalize来建立跨浏览器的一致性
+  * Reboot
+
+### Bootstrap网格系统
+
+#### 1.什么是移动设备优先策略？
+
+* 基础的CSS是移动优先。优先设计更小的宽度
+* 媒体查询。针对平板、台式机适配
+* 渐进增强。随着屏幕大小的增加而添加元素
+
+#### 2.响应式布局
+
+* viewport尺寸的增加，系统会自动分为最多12列
+
+#### 3.Bootstrap网格选项
+
+|              | 超小手机（<768px）     | 小型平板电脑（>=768px）      | 中型台式电脑（>=992px）      | 大型台式电脑（>=1200px）     |
+| :----------- | ---------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
+| 网格行为     | 一直是水平的           | 以折叠开始，断点以上是水平的 | 以折叠开始，断点以上是水平的 | 以折叠开始，断点以上是水平的 |
+| 最大容器宽度 | None(auto)             | 750px                        | 970px                        | 1170px                       |
+| Class前缀    | .col-xs-<N>            | .col-sm-<N>                  | .col-md-<N>                  | .col-lg-<N>                  |
+| 列数量和     | 12                     | 12                           | 12                           | 12                           |
+| 最大列宽     | Auto                   | -61px                        | -81px                        | -97px                        |
+| 间隙宽度     | 30px(一列两边各分15px) | 30px(一列两边各分15px)       | 30px(一列两边各分15px)       | 30px(一列两边各分15px)       |
+| 可嵌套       | yes                    | yes                          | yes                          | yes                          |
+| 偏移量       | yes                    | yes                          | yes                          | yes                          |
+| 列排序       | yes                    | yes                          | yes                          | yes                          |
+
+#### 4.Bootstrap常用组件、样式
+
+[官方组件](https://v4.bootcss.com/docs/4.0/components/alerts/)
+
+### Bootstrap与Spring Boot集成
+
+> 配置环境·常用前端框架
+
+| Tether 1.4.0            | http://tether.io                             |
+| ----------------------- | -------------------------------------------- |
+| Bootstrap v4.0.0        | http://getbootstrap.com/                     |
+| jQuery 3.3.1            | http://jquery.com/download/                  |
+| Font Awesome 4.7.0      | https://fontawesome.com/?from=io             |
+| NProgress 0.2.0         | http://ricostacruz.com/nprogress/            |
+| Thinker-md              | https://gitee.com/benhail/thinker-md         |
+| jQuery Tags Input 1.3.6 | http://xoxco.com/projects/code/tagsinput/    |
+| Bootstrap Chosen 1.0.3  | https://github.com/haubek/bootstrap4c-chosen |
+| toastr 2.1.1            | http://www.toastrjs.com/                     |
+|                         |                                              |
 
