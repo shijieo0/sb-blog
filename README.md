@@ -32,13 +32,13 @@ GET /users/modify/{id} : 根据id获取相应的用户数据并返回form.html�
 
 ## 数据持久化
 
-### 什么是JPA
+> 什么是JPA
 
 * JPA（Java Persistence API）是用于管理Java EE 和 Java SE 环境中的持久化，以及对象/关系映射的Java API
 * 最新规范为“[JSR 338：Java Persistence 2.1](https://jcp.org/en/jsr/detail?id=338)”
 * 实现：EclipseLink、Hibernate、Apache OpenJPA
 
-### JPA核心概念
+> JPA核心概念
 
 * 实体
 
@@ -149,7 +149,7 @@ GET /users/modify/{id} : 根据id获取相应的用户数据并返回form.html�
 * Hibernate 5.2.8.Final
 * MySQL Connector/J 6.0.5
 
-#### 1.持久化到H2
+> 1.持久化到H2
 
 build.gradle中添加依赖：
 
@@ -170,7 +170,7 @@ spring.h2.console.enabled=true
 
 ![1542539953655](docs\images\h2-console-login-page.png)
 
-#### 2.持久化到MySQL
+> 2.持久化到MySQL
 
 启动mysql
 
@@ -233,17 +233,17 @@ spring.jpa.hibernate.ddl-auto=create-drop
 
 ### Bootstrap网格系统
 
-#### 1.什么是移动设备优先策略？
+> 1.什么是移动设备优先策略？
 
 * 基础的CSS是移动优先。优先设计更小的宽度
 * 媒体查询。针对平板、台式机适配
 * 渐进增强。随着屏幕大小的增加而添加元素
 
-#### 2.响应式布局
+> 2.响应式布局
 
 * viewport尺寸的增加，系统会自动分为最多12列
 
-#### 3.Bootstrap网格选项
+> 3.Bootstrap网格选项
 
 |              | 超小手机（<768px）     | 小型平板电脑（>=768px）      | 中型台式电脑（>=992px）      | 大型台式电脑（>=1200px）     |
 | :----------- | ---------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
@@ -257,7 +257,7 @@ spring.jpa.hibernate.ddl-auto=create-drop
 | 偏移量       | yes                    | yes                          | yes                          | yes                          |
 | 列排序       | yes                    | yes                          | yes                          | yes                          |
 
-#### 4.Bootstrap常用组件、样式
+### Bootstrap常用组件、样式
 
 [官方组件](https://v4.bootcss.com/docs/4.0/components/alerts/)
 
@@ -275,5 +275,99 @@ spring.jpa.hibernate.ddl-auto=create-drop
 | jQuery Tags Input 1.3.6 | http://xoxco.com/projects/code/tagsinput/    |
 | Bootstrap Chosen 1.0.3  | https://github.com/haubek/bootstrap4c-chosen |
 | toastr 2.1.1            | http://www.toastrjs.com/                     |
-|                         |                                              |
+
+
+
+## 全文搜索
+
+基于Java的开源实现的全文搜索技术：
+
+* Lucene
+* ElasticSearch
+* Solr
+
+### ElasticSearch
+
+> 简介
+
+* 高度可扩展的开源全文搜索和分析引擎
+* 快速地、近实时地对大数据进行存储、搜索和分析
+* 用来支撑有复杂的数据搜索需求的企业级应用
+
+> 特点
+
+* 分布式
+* 高可用
+* 多类型
+* 多API
+* 面向文档
+* 异步写入
+* 近实时
+* 基于Lucene
+* 遵循Apache协议
+
+> 核心概念
+
+* 近实时：index_refresh
+* 集群：集群名（节点通过集群名识别和加入集群）
+* 节点：节点名
+* 索引
+* 类型
+* 文档
+* 分片（默认5分片、2副本）
+* 副本
+
+### Elasticsearch与Spring Boot集成
+
+> 配置环境
+
+* Elasticsearch 2.4.4
+* Spring Data Elasticsearch 2.1.3.RELEASE
+* JNA 4.3.0
+
+> 修改build.gradle
+
+```
+// 添加 Spring Data Elasticsearch 的依赖
+compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
+// 添加 JNA 的依赖
+compile('net.java.dev.jna:jna:4.3.0')
+```
+
+> 修改application.properties
+
+```
+# Elasticsearch 服务地址
+spring.data.elasticsearch.cluster-nodes=localhost:9300
+# 设置连接超时时间
+spring.data.elasticsearch.properties.transport.tcp.connect_timeout=120s
+```
+
+> 后台编码
+
+* 文档实体 EsBlog
+* 资源库 EsBlogRepository
+* 资源库测试用例 EsBlogRepositoryTest
+* 控制器 BlogController
+
+## 需求分析
+
+> 博客系统核心功能
+
+* 用户管理：注册、登录、增加/修改/删除/搜索用户
+* 安全设置：角色授权、权限管理
+* 博客管理：发表、编辑、删除、分类、标签设置、上传图片、最新/最热排序、阅读量统计
+* 评论管理：发表评论、删除评论、评论统计
+* 点赞管理：点赞、取消点赞、点赞量统计
+* 分类管理：创建分类、编辑分类、删除分类、按分类查询
+* 标签管理：创建标签、删除标签、按标签查询
+* 首页搜索：全文检索、最新/最热文章、热门标签/用户/文章
+
+## 原型设计
+
+* 首页
+* 用户主页
+* 博客页面
+
+## 权限管理
 
