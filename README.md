@@ -371,3 +371,66 @@ spring.data.elasticsearch.properties.transport.tcp.connect_timeout=120s
 
 ## 权限管理
 
+### Spring Security
+
+> 安全领域核心概念
+
+* 认证（authentication）：“认证”是建立主体（principal）的过程。"主体"通常是指可以在您的应用程序中执行操作的用户、设备或其他系统
+* 授权（authorization）：或称为“访问控制（access-control）”，“授权” 是指决定是否允许主体在应用程序中执行操作
+
+> 身份验证技术
+
+* HTTP BASIC
+* HTTP Digest
+* HTTP X.509
+* LDAP
+* 基于表单的认证
+* OpenID
+* 单点登录
+* Remember-me
+* 匿名身份认证
+* Run-as
+* JAAS
+* JavaEE容器认证
+
+> Spring Security 模块
+
+* Core - spring-security-core.jar
+* Remoting - spring-security-remoting.jar
+* Web - spring-security-web.jar
+* Config - spring-security-config.jar
+* LDAP - spring-security-ldap.jar
+* ACL - spring-security-acl.jar
+* CAS - spring-security-cas.jar
+* OpenID - spring-security-openid.jar
+* Test - spring-security-test.jar
+
+### Spring Security与Spring Boot集成
+
+> 配置环境
+
+* Spring Security 4.2.2.RELEASE
+* Thymeleaf Spring Security 3.0.2.RELEASE
+
+> 修改build.gradle
+
+```
+compile('org.springframework.boot:spring-boot-starter-security')
+compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
+```
+
+> 后台编码
+
+* 安全配置类
+* 权限控制器类
+
+> 前端编码
+
+* index.html
+* header.html
+* login.html
+
+> 测试运行
+
+* 访问 http://localhost:8080/users
+
