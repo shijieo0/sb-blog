@@ -108,33 +108,33 @@ GET /users/modify/{id} : 根据id获取相应的用户数据并返回form.html�
 
 * CrudRepository
 
-  > public interface CrudRepository<T, TD extends Serializable> extends Repository<T, ID> {
-  >
-  > ​	<S extends T> S save(S entity);
-  >
-  > ​	T findOne(ID primaryKey);
-  >
-  > ​	Iterable<T> findAll();
-  >
-  > ​	Long count();
-  >
-  > ​	void delete(T entity);
-  >
-  > ​	boolean exists(ID primaryKey);
-  >
-  > ​	// ... more functionality omitted.
-  >
-  > }
+  public interface CrudRepository\<T, TD extends Serializable> extends Repository\<T, ID> {
+
+  ​	\<S extends T> S save(S entity);
+
+  ​	T findOne(ID primaryKey);
+
+  ​	Iterable\<T> findAll();
+
+  ​	Long count();
+
+  ​	void delete(T entity);
+
+  ​	boolean exists(ID primaryKey);
+
+  ​	// ... more functionality omitted.
+
+  }
 
 * PagingAndSortingRepository
 
-  > public interface PagingAndSortingRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
-  >
-  > ​	Iterable<?> findAll(Sort sort);
-  >
-  > ​	Page<T> findAll(Pageable pageable);
-  >
-  > }
+  public interface PagingAndSortingRepository\<T, ID extends Serializable> extends CrudRepository\<T, ID> {
+
+  ​	Iterable\<?> findAll(Sort sort);
+
+  ​	Page\<T> findAll(Pageable pageable);
+
+  }
 
 > **Spring Data JPA自定义接口**
 
