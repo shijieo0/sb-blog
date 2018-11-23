@@ -26,9 +26,107 @@ GET /users/modify/{id} : 根据id获取相应的用户数据并返回form.html�
 * list.html ：用于展现用户列表
 * form.html：用于新增或者修改用户的资料
 * view.html：用户查看某个用户的资料
-
 * header.html：共用的头部页面
 * footer.html：共用的底部页面
+
+## Thymeleaf
+
+> 理解Thymeleaf
+
+* Java 模板引擎，能够处理HTML、XML、JavaScript、CSS甚至纯文本。类似JSP、Freemarker
+* 自然模板。原型即页面
+* 语法优雅易懂。OGNL、SpringEL
+* 遵从Web标准。支持HTML5
+
+> Thymeleaf标准方言
+
+1、如何识别标准方言
+
+* <span th:text="...">
+
+  * 需要在HTML中引入thymeleaf命名空间，如下
+
+  * ```
+    <html xmlns:th="http://www.thymeleaf.org"
+          xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    ```
+
+* <span data-th-text="...">
+
+  * 符合HTML5标准，不用引thymeleaf命名空间
+
+> 标准方言内容：
+
+* 标准表达式
+
+  * **1.变量表达式：${...}**
+
+  * 举例：<span th:text="${book.author.name}">
+
+  * **2.消息表达式：#{...}，也称为“文本外部化、国际化或i18n”**
+
+  * 举例：
+
+    ```
+    <table>
+        <th th:text="#{header.address.city}">...</th>
+        <th th:text="#{header.address.country}">...</th>
+    </table>
+    ```
+
+  * **3.星号表达式：*{...}**
+
+    ```
+    <div th:object="${book}">
+        <span th:text="*{title}">...</span>
+    </div>
+    ```
+
+  * *{...}与${...}的区别是：它是在当前选择的对象而不是整个上下文变量映射上执行。
+
+  * **4.链接表达式：@{...}**
+
+  * 链接表达式可以是相对的，在这种情况下，应用程序上下文将不会作为URL的前缀：
+
+    > \<a th:href="@{../documents/report}">...\</a>
+
+  * 也可以是服务器相对（同样，没有应用程序上下文前缀）：
+
+    > \<a th:href="@{~/contents/main}">...\</a>
+
+  * 和协议相对（就像绝对URL，但浏览器将使用在显示的页面中使用的相同的HTTP或HTTPS协议）：
+
+    > \<a th:href="@{//static.mycompany.com/res/initial}">...\</a>
+
+  * 也可以是绝对的
+
+    > \<a th:href="@{http://www.mycompany.com/main}">...\</a>
+
+  * **5.分段表达式：th:insert 或 th:replace**
+
+  * 
+
+* 设置属性值
+
+* 迭代器
+
+* 条件语句
+
+* 模板布局
+
+* 属性优先级
+
+* 注释
+
+* 内联
+
+* 基本对象
+
+* 工具对象
+
+
+
+
 
 ## 数据持久化
 

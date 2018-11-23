@@ -16,6 +16,13 @@
         <a class="btn btn-outline-secondary" th:href="@{'~/users/delete/'+${userModel.user.id}}">删除</a>
         <a class="btn btn-outline-secondary" th:href="@{'~/users/modify/'+${userModel.user.id}}">修改</a>
     </div>
+    <table>
+        <th th:text="#{header.address.city}">...</th>
+        <th th:text="#{header.address.country}">...</th>
+    </table>
+    <div th:object="${book}">
+        <span th:text="*{title}">...</span>
+    </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
